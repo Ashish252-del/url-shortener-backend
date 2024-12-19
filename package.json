@@ -14,10 +14,13 @@
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
+    "geoip-lite": "^1.4.10",
     "mysql2": "^3.11.5",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "redis": "^4.7.0",
-    "sequelize": "^6.37.5"
+    "sequelize": "^6.37.5",
+    "ua-parser-js": "^2.0.0",
+    "uuid": "^11.0.3"
   }
 }
