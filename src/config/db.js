@@ -21,7 +21,7 @@ const createDatabase = async () => {
     await connection.end();
   } catch (err) {
     console.error('Unable to create database:', err.message);
-    process.exit(1);
+    throw new Error("error in db creation"+err)
   }
 };
 

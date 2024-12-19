@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('./src/config/googleAuth'); // Google OAuth configuration
 require('./src/models'); // Import models (initializes models automatically)
-//const routes = require('./src/routes'); // Centralized routes entry
+const routes = require('./src/routes'); // Centralized routes entry
 
 const app = express();
 
@@ -35,7 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Register all routes
-//app.use('/', routes);
+app.use('/', routes);
 
 // Test Route
 app.get('/', (req, res) => {
