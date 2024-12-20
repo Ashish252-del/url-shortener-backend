@@ -23,7 +23,7 @@ const models = {};
   models.Analytics.belongsTo(models.Url, { foreignKey: 'urlId' });
 
   // Synchronize models
-  await sequelize.sync({ alter: true });
+  await sequelize.sync(); //{ alter: true }
   console.log('Database synchronized successfully!!');
   Object.keys(models).forEach(model => console.log("models are ",model)
   )

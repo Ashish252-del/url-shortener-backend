@@ -11,7 +11,7 @@ const createDatabase = async () => {
   try {
     const connection = await mysql.createConnection({
       host: dbConfig.host,
-      port: dbConfig.port || 3306,
+      port: dbConfig.port || 3307,
       user: dbConfig.username,
       password: dbConfig.password,
     });
@@ -21,7 +21,7 @@ const createDatabase = async () => {
     await connection.end();
   } catch (err) {
     console.error('Unable to create database:', err.message);
-    throw new Error("error in db creation"+err)
+    throw new Error('Database initialization failed'); 
   }
 };
 
@@ -35,9 +35,9 @@ const initializeSequelize = async () => {
     dbConfig.password,
     {
       host: dbConfig.host,
-      port: dbConfig.port || 3306,
+      port: dbConfig.port || 3307,
       dialect: dbConfig.dialect,
-      logging: false,
+      logging: true,
     }
   );
 

@@ -6,8 +6,10 @@ let redisClient;
 const getRedisClient = () => {
   if (!redisClient) {
     // Create a new Redis client if not already initialized
+    console.log("tring to connect to ====*************>",'redis');
+    
     redisClient = redis.createClient({
-      url: process.env.REDIS_URL || 'redis://localhost:6379',
+     url:'redis://localhost:6379'
     });
 
     // Connect to Redis
@@ -20,4 +22,4 @@ const getRedisClient = () => {
   return redisClient; // Return the existing or newly created client
 };
 
-module.exports = getRedisClient();
+module.exports = getRedisClient; // Export the function itself, not the result of calling it
