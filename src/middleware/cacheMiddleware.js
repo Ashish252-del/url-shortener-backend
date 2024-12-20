@@ -1,4 +1,5 @@
-const redisClient = require('../config/redis');
+const getRedisClient = require('../config/redis');
+const redisClient = getRedisClient();
 const cacheMiddleware = async (req, res, next) => {
   const { alias } = req.params;
 

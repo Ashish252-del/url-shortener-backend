@@ -3,7 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const UAParser = require('ua-parser-js'); // For user-agent parsing
 const geoip = require('geoip-lite'); // For geolocation
 const parser = new UAParser();
-const redisClient = require('../../config/redis');
+const getRedisClient = require('../../config/redis');
+const redisClient = getRedisClient();
 const RESERVED_ALIASES = ['overall', 'topic'];
 
 const createShortURL = async (req, res) => {
