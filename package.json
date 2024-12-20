@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/**/*.test.js --timeout 15000",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.5.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -16,11 +18,18 @@
     "express-session": "^1.18.1",
     "geoip-lite": "^1.4.10",
     "mysql2": "^3.11.5",
+    "nanoid": "^5.0.9",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "redis": "^4.7.0",
     "sequelize": "^6.37.5",
     "ua-parser-js": "^2.0.0",
     "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "chai-http": "^4.3.0",
+    "mocha": "^11.0.1",
+    "sinon": "^19.0.2",
+    "supertest": "^7.0.0"
   }
 }

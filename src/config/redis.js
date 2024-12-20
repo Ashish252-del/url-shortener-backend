@@ -9,7 +9,7 @@ const getRedisClient = () => {
     console.log("tring to connect to ====*************>",'redis');
     
     redisClient = redis.createClient({
-     url:'redis://localhost:6379'
+     url:'redis://redis:6379'
     });
 
     // Connect to Redis

@@ -1,0 +1,40 @@
+version: '3.8'  # Specify the version of Docker Compose
+
+services:
+  mysql:
+    image: mysql:latest  # Use the official MySQL image
+    container_name: my-mysql-container  # Name of the MySQL container
+    environment:
+      MYSQL_ROOT_PASSWORD: 321654  # Set the root password
+      MYSQL_DATABASE: development_url_shortener  # Create a database
+      MYSQL_USER: app_user  # Create a user (consider using a non-root user)
+      MYSQL_PASSWORD: 321654  # Set user password
+    ports:
+      - "3307:3306"  # Expose MySQL port (default)
+
+  redis:
+    image: redis  # Use the official Redis image
+    container_name: my-redis-container  # Name of the Redis container
+    ports:
+      - "6379:6379"  # Expose Redis port
+
+  node-app:
+    build:
+      context: .  # Use the current directory as the build context
+      dockerfile: Dockerfile  # Specify the Dockerfile for the Node.js app
+    container_name: my-node-app-container  # Name of the Node.js container
+    ports:
+      - "3000:3000"  # Expose Node.js app port
+    environment:
+      DB_HOST: my-mysql-container  # Set the MySQL host to the service name
+      DB_USER: app_user  # Set the MySQL user (non-root)
+      DB_PASSWORD: 321654  # Set the MySQL password
+      DB_NAME: development_url_shortener  # Set the MySQL database name
+      REDIS_HOST: redis  # Set the Redis host to the service name
+      REDIS_PORT: 6379  # Set the Redis port
+    depends_on:
+      - mysql  # Ensure MySQL starts before the Node.js app
+      - redis  # Ensure Redis starts before the Node.js app
+
+volumes:
+  mysql_data:  # Define a volume for MySQL data persistence
