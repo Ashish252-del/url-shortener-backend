@@ -7,15 +7,16 @@ const {
 } = require('../controllers/url/analyticsController');
 
 const router = express.Router();
+const models = require('../models');
 
 // Get overall analytics for all URLs created by the user
-router.get('/overall', ensureAuthenticated, getOverallAnalytics);
+router.get('/overall', ensureAuthenticated, getOverallAnalytics(models));
 
 // Get analytics for a specific short URL
-router.get('/:alias', ensureAuthenticated, getAnalyticsByAlias);
+router.get('/:alias', ensureAuthenticated, getAnalyticsByAlias(models));
 
 // Get analytics for a specific topic
-router.get('/topic/:topic', ensureAuthenticated, getAnalyticsByTopic);
+router.get('/topic/:topic', ensureAuthenticated, getAnalyticsByTopic(models));
 
 
 

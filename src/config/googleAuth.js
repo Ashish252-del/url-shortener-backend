@@ -23,7 +23,6 @@ passport.use(
             email: profile.emails[0].value,
             googleId: profile.id,
           });
-          console.log('New user created:', user);
         } else {
         }
 

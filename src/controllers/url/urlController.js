@@ -1,30 +1,51 @@
-const models = require('../../models');
 const { v4: uuidv4 } = require('uuid');
 const UAParser = require('ua-parser-js'); // For user-agent parsing
 const geoip = require('geoip-lite'); // For geolocation
 const parser = new UAParser();
-const getRedisClient = require('../../config/redis');
-const redisClient = getRedisClient();
 const RESERVED_ALIASES = ['overall', 'topic'];
 
-const createShortURL = async (req, res) => {
+const createShortURL = (models, redisClient) => async (req, res) => {
   try {
-    const { longUrl, customAlias, topic } = req.body;
-
+    const { longUrl, customAlias, topic, emailId } = req.body;
+     if((!req.user || !req.user.id) && !emailId) {
+      return res.status(400).json({ message: 'User is not authoerized plz send emailId' });
+     }
     // Validate input
     if (!longUrl) {
       return res.status(400).json({ message: 'Long URL is required' });
     }
 
+    if (!req.user || !req.user.id) {
+      const user = await models.User.findOne({ where:{email: emailId} });
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: "User not found with emailId " + emailId });
+      }
+      req.user = user;
+    }
+    
+    // Check if the long URL already exists in the database
+    const existingURL = await models.Url.findOne({ where: { longUrl } });
+
+    if (existingURL) {
+      // If the long URL exists, return the existing short URL
+      const shortUrl = `${req.protocol}://${req.get('host')}/api/shorten/${existingURL.shortAlias}`;
+      return res.status(200).json({
+        message: 'Long URL already shortened',
+        shortUrl,
+      });
+    }
     // Generate a unique alias if customAlias is not provided
-    let alias = customAlias ||uuidv4().slice(0, 8); // Default alias length is 8 characters
+    let alias = customAlias || uuidv4().slice(0, 8); // Default alias length is 8 characters
     
     if (RESERVED_ALIASES.includes(alias)) {
       return res.status(400).json({ message: `Alias "${alias}" is reserved and cannot be used.` });
     }
+
     // Check if the alias already exists
-    const existingURL = await models.Url.findOne({ where: { shortAlias: alias } });
-    if (existingURL) {
+    const existingAlias = await models.Url.findOne({ where: { shortAlias: alias } });
+    if (existingAlias) {
       return res.status(409).json({ message: 'Custom alias already exists' });
     }
 
@@ -49,7 +70,7 @@ const createShortURL = async (req, res) => {
   }
 };
 
-const redirectToLongURL = async (req, res) => {
+const redirectToLongURL = (models, redisClient) => async (req, res) => {
   try {
     const { alias } = req.params;
 
@@ -133,5 +154,5 @@ const redirectToLongURL = async (req, res) => {
   }
 };
 
-
+// Export the functions, allowing dependency injection
 module.exports = { createShortURL, redirectToLongURL };

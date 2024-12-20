@@ -1,7 +1,6 @@
-const models = require('../../models');
 
 // Get analytics for a specific short URL
-const getAnalyticsByAlias = async (req, res) => {
+const getAnalyticsByAlias = (models) => async (req, res) => {
   try {
     const { alias } = req.params;
 
@@ -29,7 +28,7 @@ const getAnalyticsByAlias = async (req, res) => {
 };
 
 // Get analytics for URLs grouped by a topic
-const getAnalyticsByTopic = async (req, res) => {
+const getAnalyticsByTopic = (models) => async (req, res) => {
   try {
     const { topic } = req.params;
     const userId = req.user.id;
@@ -62,7 +61,7 @@ const getAnalyticsByTopic = async (req, res) => {
 };
 
 // Get overall analytics for all URLs created by the user
-const getOverallAnalytics = async (req, res) => {
+const getOverallAnalytics = (models) => async (req, res) => {
   try {
     const userId = req.user.id;
 
