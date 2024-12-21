@@ -14,11 +14,11 @@ function model(sequelize) {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    clicks: {
+    userId: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      allowNull: false,
     },
-    uniqueUsers: {
+    clicks: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },

@@ -13,9 +13,9 @@ describe('URL Controller', () => {
       protocol: 'http',
       get: sinon.stub().returns('localhost:3000'),
       user: { id: 1 }, // Mock user object
-      headers: {"user-agent":sinon.stub()},
-      connection:{"remoteAddress":sinon.stub()}
-    }
+      headers: { 'user-agent': sinon.stub() },
+      connection: { remoteAddress: sinon.stub() },
+    };
     res = {
       status: sinon.stub().returnsThis(),
       json: sinon.stub().returnsThis(),
@@ -31,8 +31,10 @@ describe('URL Controller', () => {
       Analytics: {
         findOne: sinon.stub(),
         create: sinon.stub(),
-        save: sinon.stub(), // Stub the save method
-
+        save: sinon.stub(),
+      },
+      User: {
+        findOne: sinon.stub(),
       },
     };
 
@@ -162,6 +164,22 @@ describe('URL Controller', () => {
 
       expect(res.status.calledWith(500)).to.be.true;
       expect(res.json.calledWith({ message: 'Server error' })).to.be.true;
+    });
+
+    it('should correctly update analytics on redirect', async () => {
+      req.params.alias = 'short123';
+      redisClient.get.resolves(null); // Simulate cache miss
+      const mockUrl = { longUrl: 'https://example.com', id: 1 };
+      models.Url.findOne.resolves(mockUrl); // Simulate database entry
+      const mockAnalytics = { clicks: 1, save: sinon.stub() };
+      models.Analytics.findOne.resolves(null); // No previous analytics
+      models.Analytics.create.resolves(mockAnalytics); // Create new analytics entry
+
+      const controller = redirectToLongURL(models, redisClient);
+      await controller(req, res);
+
+      expect(models.Analytics.create.calledOnce).to.be.true;
+      expect(mockAnalytics.save.calledOnce).to.be.true; // Ensure save method is called to update the analytics
     });
   });
 });

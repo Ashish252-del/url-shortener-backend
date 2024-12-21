@@ -73,10 +73,8 @@ const createShortURL = (models, redisClient) => async (req, res) => {
 const redirectToLongURL = (models, redisClient) => async (req, res) => {
   try {
     const { alias } = req.params;
-
     let cachedData = await redisClient.get(alias);
     let longUrl, urlId;
-
     if (cachedData) {
       console.log('Cache hit!!');
       const parsedData = JSON.parse(cachedData);
@@ -120,9 +118,8 @@ const redirectToLongURL = (models, redisClient) => async (req, res) => {
     let analyticsEntry = await models.Analytics.findOne({
       where: {
         urlId,
+        userId:req.user.id,
         date: today,
-        osType: uaResult.os.name || 'Unknown',
-        deviceType: uaResult.device.type || 'Desktop',
       },
     });
 
@@ -135,7 +132,6 @@ const redirectToLongURL = (models, redisClient) => async (req, res) => {
       await models.Analytics.create({
         urlId,
         clicks: 1,
-        uniqueUsers: 1, // Adjust logic for unique users later
         osType: uaResult.os.name || 'Unknown',
         deviceType: uaResult.device.type || 'Desktop',
         ipAddress: ip || 'Unknown',
@@ -143,6 +139,7 @@ const redirectToLongURL = (models, redisClient) => async (req, res) => {
         region: geo.region || 'Unknown',
         city: geo.city || 'Unknown',
         date: today,
+        userId:req.user.id,
       });
     }
 

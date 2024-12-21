@@ -1,5 +1,5 @@
 const initializeSequelize = require('../config/db');
-
+const { Sequelize } = require('sequelize');
 // Import models
 const UserModel = require('./user');
 const UrlModel = require('./url');
@@ -23,11 +23,11 @@ const models = {};
   models.Analytics.belongsTo(models.Url, { foreignKey: 'urlId' });
 
   // Synchronize models
-  await sequelize.sync(); //{ alter: true }
+  await sequelize.sync({ alter: true }); //{ alter: true }
   console.log('Database synchronized successfully!!');
   Object.keys(models).forEach(model => console.log("models are ",model)
   )
-  models.sequelize = sequelize;
+  models.Sequelize = Sequelize;
 })();
 
 module.exports = models;

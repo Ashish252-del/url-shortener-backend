@@ -48,6 +48,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(200)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({
         message: 'Analytics fetched successfully',
         url: mockUrl,
@@ -63,6 +64,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(404)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({ message: 'Short URL not found' })).to.be.true;
     });
 
@@ -74,6 +76,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(500)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({ message: 'Server error' })).to.be.true;
     });
   });
@@ -90,6 +93,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(200)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({
         message: 'Analytics for topic fetched successfully',
         topic: 'technology',
@@ -106,6 +110,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(404)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({ message: 'No URLs found under this topic' })).to.be.true;
     });
 
@@ -117,6 +122,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(500)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({ message: 'Server error' })).to.be.true;
     });
   });
@@ -132,6 +138,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(200)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({
         message: 'Overall analytics fetched successfully',
         urls: mockUrls,
@@ -146,6 +153,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(404)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({ message: 'No URLs found for this user' })).to.be.true;
     });
 
@@ -156,6 +164,7 @@ describe('Analytics Controller', () => {
       await controller(req, res);
 
       expect(res.status.calledWith(500)).to.be.true;
+      expect(res.json.calledOnce).to.be.true;
       expect(res.json.calledWith({ message: 'Server error' })).to.be.true;
     });
   });
